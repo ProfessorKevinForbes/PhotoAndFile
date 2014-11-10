@@ -98,22 +98,22 @@
     function onPhotoDataSuccess(imageData2) {
       imageData = imageData2;
 
-      // Get image handle
-      //
       var smallImage = document.getElementById('smallImage');
-
-      // Unhide image elements
-      //
       smallImage.style.display = 'block';
-
-      // Show the captured photo
-      // The inline CSS rules are used to resize the image
-      //
       smallImage.src = "data:image/jpeg;base64," + imageData2;
 
 
     }
 
+    function clearPic() {
+      imageData = null;
+
+      var smallImage = document.getElementById('smallImage');
+      smallImage.style.display = 'block';
+      smallImage.src = null;
+
+
+    }
     </script>
   </head>
   <body>
@@ -129,6 +129,7 @@
 
     <h1>Photo Code</h1>
    	<button onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
+   	<button onclick="clearPic();">Clear Pic</button> <br>
 
  	<img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
  

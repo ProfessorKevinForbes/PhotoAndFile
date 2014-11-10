@@ -105,15 +105,7 @@
 
     }
 
-    function clearPic() {
-      imageData = "";
 
-      var smallImage = document.getElementById('smallImage');
-      smallImage.style.display = 'block';
-      smallImage.src = "";
-
-
-    }
     </script>
   </head>
   <body>
@@ -129,7 +121,7 @@
 
     <h1>Photo Code</h1>
    	<button onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
-   	<button onclick="clearPic();">Clear Pic</button> <br>
+
 
  	<img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
  

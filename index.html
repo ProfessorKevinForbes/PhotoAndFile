@@ -7,6 +7,8 @@
     <script type="text/javascript" charset="utf-8">
 
     var imageData;
+    var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value 
 
     // Wait for device API libraries to load
     //
@@ -15,7 +17,8 @@
     // device APIs are available
     //
     function onDeviceReady() {
-
+        pictureSource=navigator.camera.PictureSourceType;
+        destinationType=navigator.camera.DestinationType;
     }
 
 
@@ -47,6 +50,10 @@
 
     function fail(error) {
         alert("File Error:" + error.code);
+    }
+ 
+    function onFail(message) {
+      alert('Failed because: ' + message);
     }
 
 

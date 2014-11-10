@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File App</title>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1"/>
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    var imageData;
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+
+    }
+
+
+//Regular Write Code
+
+    function writeFile() {
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+
+    }
+
+    function gotFS(fileSystem) {
+	var filename = document.getElementById("fileNameBox").value;
+        fileSystem.root.getFile(filename, {create: true, exclusive: false}, gotFileEntry, fail);
+    }
+
+    function gotFileEntry(fileEntry) {
+        fileEntry.createWriter(gotFileWriter, fail);
+    }
+
+    function gotFileWriter(writer) {
+	writer.onwriteend = function(evt) {
+		
+	    document.getElementById("output").innerHTML = "File Write Complete!";
+	};
+
+        writer.write(imageData);
+
+    }
+
+    function fail(error) {
+        alert("File Error:" + error.code);
+    }
+
+
+
+
+//Read and Show Code
+
+    function showFileText() {
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFSRead, fail);
+    }
+
+    function gotFSRead(fileSystem) {
+	var filename = document.getElementById("fileNameBox").value;
+        fileSystem.root.getFile(filename, null, gotFileEntryRead, fail);
+    }
+
+    function gotFileEntryRead(fileEntry) {
+        fileEntry.file(gotFileRead, fail);
+    }
+
+    function gotFileRead(file){
+        
+        readAsText(file);
+    }
+
+    function readAsText(file) {
+        var reader = new FileReader();
+        reader.onloadend = function(evt) {
+	    var value = evt.target.result;
+	    onPhotoDataSuccess(value);
+        };
+        reader.readAsText(file);
+    }
+
+
+//Photo Code
+    function capturePhotoWithData() {
+      // Take picture using device camera and retrieve image as base64-encoded string
+      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.DATA_URL });
+    }
+
+    function onPhotoDataSuccess(imageData2) {
+      imageData = imageData2;
+
+      // Get image handle
+      //
+      var smallImage = document.getElementById('smallImage');
+
+      // Unhide image elements
+      //
+      smallImage.style.display = 'block';
+
+      // Show the captured photo
+      // The inline CSS rules are used to resize the image
+      //
+      smallImage.src = "data:image/jpeg;base64," + imageData2;
+
+
+    }
+
+    </script>
+  </head>
+  <body>
+    <h1>File Code</h1>
+    <p id="output">FileApp</p>
+
+	<form>
+		Picture FileName: <input type="text" id="fileNameBox"><br>
+	</form>
+        <button onclick="showFileText();">Read and Show Pic</button>
+	<br>
+
+    <h1>Photo Code</h1>
+   	<button onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
+
+ 	<img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+ 
+
+  </body>
+</html>
